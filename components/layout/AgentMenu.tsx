@@ -155,7 +155,7 @@ export default function AgentMenu({ activeTab, onTabChange }: AgentMenuProps) {
         backgroundColor: "#FFFFFF",
         borderRight: "1px solid #E5E7EB",
       }}
-      className="fixed top-0 z-40 h-screen flex flex-col overflow-y-auto"
+      className="fixed top-0 z-20 h-screen flex flex-col overflow-y-auto"
     >
       {/* ── Header ────────────────────────────────────────────────────────── */}
       <div className="px-4 pt-5 pb-4 shrink-0">

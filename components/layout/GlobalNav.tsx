@@ -108,7 +108,7 @@ export default function GlobalNav() {
         aria-label="Global navigation"
         style={{ width: 56, backgroundColor: "#12344D" }}
         className={cn(
-          "fixed left-0 top-0 z-50",
+          "fixed left-0 top-0 z-30",
           "h-screen",
           "flex flex-col items-center",
           "py-3"
