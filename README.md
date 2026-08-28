@@ -15,7 +15,7 @@
 
 ## Live Demo
 
-🔗 **[loopcraft.vercel.app](https://loopcraft.vercel.app)** ← deployed on Vercel
+🔗 **[fresh-works-kavin.vercel.app](https://fresh-works-kavin.vercel.app)** ← deployed on Vercel
 
 Click **"▶ Start Demo"** on the Feedback Loops page to see the full 5-step automated walkthrough.
 
