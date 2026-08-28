@@ -197,7 +197,7 @@ function StatCard({ label, value, trend, sub, onClick, pulse }: StatCardProps) {
       onClick={onClick}
       onKeyDown={onClick ? (e) => e.key === "Enter" && onClick() : undefined}
       className={cn(
-        "fs-card p-4 min-w-[180px] flex-1 transition-all duration-150",
+        "fs-card p-4 transition-all duration-150",
         onClick && "cursor-pointer hover:border-gray-300 hover:shadow",
         pulse && "animate-pulse"
       )}
@@ -213,7 +213,7 @@ function StatCard({ label, value, trend, sub, onClick, pulse }: StatCardProps) {
 
 function StatsRow({ onKBClick, pulse }: { onKBClick: () => void; pulse: boolean }) {
   return (
-    <div className="flex gap-4 overflow-x-auto pb-1">
+    <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(4, minmax(0, 1fr))" }}>
       <StatCard
         label="Failed Deflections (7d)"
         value="47"
