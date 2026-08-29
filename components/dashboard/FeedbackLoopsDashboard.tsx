@@ -2,22 +2,9 @@
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
-  RefreshCw,
-  ArrowDown,
-  ArrowUp,
-  ChevronRight,
-  ThumbsDown,
-  CheckCircle,
-  Play,
-  Volume2,
-  VolumeX,
-  Loader2,
-  AlertTriangle,
-  FileText,
-  TrendingDown,
-  TrendingUp,
-  Zap,
-  Shield,
+  RefreshCw, ArrowDown, ArrowUp, ChevronRight, ThumbsDown,
+  CheckCircle, Play, Volume2, VolumeX, Loader2, AlertTriangle,
+  FileText, TrendingDown, TrendingUp, Zap, Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -30,11 +17,9 @@ import { useSpeech } from "@/hooks/useSpeech";
 ═══════════════════════════════════════════════════════════════════════════ */
 
 interface FailureTicket {
-  id: string;
-  query: string;
+  id: string; query: string;
   type: "STALE ARTICLE" | "NO COVERAGE" | "WRONG INTENT";
-  article: string;
-  time: string;
+  article: string; time: string;
 }
 
 const TICKETS: FailureTicket[] = [
@@ -45,39 +30,30 @@ const TICKETS: FailureTicket[] = [
   { id: "T-4751", query: "How do I access Salesforce sandbox?",     type: "NO COVERAGE",   article: "(No article found)",            time: "1 day ago"   },
 ];
 
-const TYPE_CONFIG: Record<FailureTicket["type"], {
-  pill: string;
-  border: string;
-  bg: string;
+// Inline-style configs — guaranteed to render regardless of Tailwind purging
+const TYPE_STYLE: Record<FailureTicket["type"], {
+  borderLeft: string; bg: string;
+  pillBg: string; pillText: string; pillBorder: string;
 }> = {
   "STALE ARTICLE": {
-    pill:   "bg-amber-100 text-amber-800 border-amber-300",
-    border: "border-l-amber-400",
-    bg:     "bg-amber-50/40",
+    borderLeft: "#FBBF24", bg: "rgba(255,251,235,0.5)",
+    pillBg: "#FEF3C7", pillText: "#92400E", pillBorder: "#FCD34D",
   },
   "NO COVERAGE": {
-    pill:   "bg-red-100 text-red-800 border-red-300",
-    border: "border-l-red-400",
-    bg:     "bg-red-50/40",
+    borderLeft: "#F87171", bg: "rgba(254,242,242,0.5)",
+    pillBg: "#FEE2E2", pillText: "#991B1B", pillBorder: "#FCA5A5",
   },
   "WRONG INTENT": {
-    pill:   "bg-purple-100 text-purple-800 border-purple-300",
-    border: "border-l-purple-400",
-    bg:     "bg-purple-50/40",
+    borderLeft: "#C084FC", bg: "rgba(250,245,255,0.5)",
+    pillBg: "#F3E8FF", pillText: "#6B21A8", pillBorder: "#D8B4FE",
   },
 };
 
 const DRAFT_TITLE = "Connecting to GlobalProtect VPN (Updated March 2025)";
-const DIAGNOSIS   = "KB article references deprecated Cisco AnyConnect. Company migrated to Palo Alto GlobalProtect in March 2025.";
+const DIAGNOSIS   = "KB references deprecated Cisco AnyConnect. Migrated to Palo Alto GlobalProtect, March 2025.";
 
 function buildBriefText(id: string, query: string) {
-  return (
-    `Correction Brief for ticket ${id}. ` +
-    `Employee query: ${query}. ` +
-    `Root cause: ${DIAGNOSIS} ` +
-    `Proposed fix: Update the knowledge base article titled "${DRAFT_TITLE}". ` +
-    `Action required: Review the auto-drafted article and click Approve to publish.`
-  );
+  return `Correction Brief for ticket ${id}. Employee query: ${query}. Root cause: ${DIAGNOSIS} Proposed fix: Update the knowledge base article titled "${DRAFT_TITLE}". Action required: Review the auto-drafted article and click Approve to publish.`;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -94,15 +70,17 @@ const DEMO_STEPS = [
 
 function DemoToast({ step, message }: { step: number; message: string }) {
   return (
-    <div role="status" aria-live="polite"
-      className="fixed bottom-6 right-6 z-[60] bg-gray-900 text-white px-4 py-3 rounded-lg shadow-xl max-w-sm w-full border border-gray-700">
+    <div role="status" aria-live="polite" className="fixed bottom-6 right-6 z-[60] max-w-sm w-full" style={{
+      background: "#1F2937", borderRadius: 10, padding: "12px 16px",
+      boxShadow: "0 8px 32px rgba(0,0,0,0.3)", border: "1px solid #374151"
+    }}>
       <div className="flex items-center gap-2 mb-1">
-        <div className="w-5 h-5 rounded-full bg-fw-blue flex items-center justify-center shrink-0">
-          <span className="text-[10px] font-bold text-white">{step}</span>
+        <div style={{ width: 20, height: 20, borderRadius: "50%", background: "#1D6AE5", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <span style={{ color: "#fff", fontSize: 10, fontWeight: 700 }}>{step}</span>
         </div>
-        <p className="text-[11px] text-gray-400 font-medium">Step {step} of 5</p>
+        <span style={{ color: "#9CA3AF", fontSize: 11, fontWeight: 500 }}>Step {step} of 5</span>
       </div>
-      <p className="text-sm leading-snug pl-7">{message}</p>
+      <p style={{ color: "#F9FAFB", fontSize: 13, lineHeight: 1.5, paddingLeft: 28 }}>{message}</p>
     </div>
   );
 }
@@ -110,9 +88,9 @@ function DemoToast({ step, message }: { step: number; message: string }) {
 function SpeechErrorToast({ message, onDismiss }: { message: string; onDismiss: () => void }) {
   useEffect(() => { const t = setTimeout(onDismiss, 3000); return () => clearTimeout(t); }, [onDismiss]);
   return (
-    <div role="alert" className="fixed bottom-6 right-6 z-[70] bg-red-600 text-white px-4 py-3 rounded-lg shadow-xl text-sm font-medium max-w-xs flex items-center gap-2">
-      <AlertTriangle size={14} />
-      {message}
+    <div role="alert" className="fixed bottom-6 right-6 z-[70] flex items-center gap-2 text-white text-sm font-medium max-w-xs"
+      style={{ background: "#DC2626", borderRadius: 8, padding: "10px 14px", boxShadow: "0 4px 16px rgba(220,38,38,0.4)" }}>
+      <AlertTriangle size={14} /> {message}
     </div>
   );
 }
@@ -121,21 +99,20 @@ function StepIndicator({ active }: { active: number }) {
   return (
     <div className="flex items-center gap-2">
       {DEMO_STEPS.map((_, i) => {
-        const n = i + 1;
-        const isActive = n === active;
-        const isDone   = n < active;
+        const n = i + 1; const isActive = n === active; const isDone = n < active;
         return (
           <React.Fragment key={n}>
-            <div className={cn(
-              "flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold shrink-0 transition-all duration-300",
-              isActive && "bg-fw-blue text-white shadow-[0_0_0_3px_rgba(29,106,229,0.2)]",
-              isDone   && "bg-emerald-500 text-white",
-              !isActive && !isDone && "bg-gray-200 text-gray-400"
-            )}>
-              {isDone ? <CheckCircle size={12} /> : n}
+            <div style={{
+              width: 28, height: 28, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: 11, fontWeight: 700, flexShrink: 0, transition: "all 0.3s",
+              background: isActive ? "#1D6AE5" : isDone ? "#10B981" : "#E5E7EB",
+              color: (isActive || isDone) ? "#fff" : "#9CA3AF",
+              boxShadow: isActive ? "0 0 0 4px rgba(29,106,229,0.2)" : "none",
+            }}>
+              {isDone ? <CheckCircle size={13} /> : n}
             </div>
             {i < DEMO_STEPS.length - 1 && (
-              <div className={cn("flex-1 h-0.5 rounded transition-all duration-500", isDone ? "bg-emerald-400" : "bg-gray-200")} />
+              <div style={{ flex: 1, height: 2, borderRadius: 2, background: isDone ? "#10B981" : "#E5E7EB", transition: "background 0.5s" }} />
             )}
           </React.Fragment>
         );
@@ -155,46 +132,33 @@ function PageHeader({ onDemo, running }: { onDemo: () => void; running: boolean 
         <nav className="flex items-center gap-1 mb-2 flex-wrap">
           {["AI Agent Studio", "LoopCraft Supervisor Agent", "Feedback Loops"].map((c, i, a) => (
             <React.Fragment key={c}>
-              <span className={cn("text-xs", i === a.length - 1 ? "text-fw-blue font-medium" : "text-gray-400 hover:text-gray-600 cursor-pointer")}>
-                {c}
-              </span>
-              {i < a.length - 1 && <ChevronRight size={12} className="text-gray-300 shrink-0" />}
+              <span style={{ fontSize: 12, color: i === a.length - 1 ? "#1D6AE5" : "#9CA3AF", fontWeight: i === a.length - 1 ? 500 : 400 }}>{c}</span>
+              {i < a.length - 1 && <ChevronRight size={12} style={{ color: "#D1D5DB" }} />}
             </React.Fragment>
           ))}
         </nav>
-
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-fw-blue to-blue-700 flex items-center justify-center shadow-sm shrink-0">
-            <Zap size={16} className="text-white" />
+          <div style={{ width: 36, height: 36, borderRadius: 8, background: "linear-gradient(135deg,#1D6AE5,#1558C0)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 2px 8px rgba(29,106,229,0.3)" }}>
+            <Zap size={18} color="#fff" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-gray-900">Feedback Loops</h1>
-            <p className="text-xs text-gray-500 mt-0.5">
-              Intercepts failed AI responses · diagnoses root causes · auto-drafts KB corrections
-            </p>
+            <h1 style={{ fontSize: 22, fontWeight: 700, color: "#111827", lineHeight: 1.2 }}>Feedback Loops</h1>
+            <p style={{ fontSize: 12, color: "#6B7280", marginTop: 2 }}>Intercepts failed AI responses · diagnoses root causes · auto-drafts KB corrections</p>
           </div>
         </div>
       </div>
 
-      <div className="flex items-center gap-2 shrink-0 pt-1 flex-wrap">
-        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-          <span className="text-xs text-emerald-700 font-medium">Live · 2 min ago</span>
+      <div className="flex items-center gap-2 shrink-0 flex-wrap pt-1">
+        <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#F0FDF4", border: "1px solid #BBF7D0", borderRadius: 999, padding: "4px 10px" }}>
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#16A34A", display: "inline-block" }} className="animate-pulse" />
+          <span style={{ fontSize: 12, color: "#15803D", fontWeight: 500 }}>Live · 2 min ago</span>
         </div>
-
-        <button
-          type="button"
-          onClick={onDemo}
-          disabled={running}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-indigo-200 text-indigo-600 bg-indigo-50 hover:bg-indigo-100 text-sm font-medium transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <Play size={13} fill="currentColor" />
-          {running ? "Running…" : "Start Demo"}
+        <button type="button" onClick={onDemo} disabled={running}
+          style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "6px 12px", borderRadius: 6, border: "1px solid #C7D2FE", background: "#EEF2FF", color: "#4338CA", fontSize: 13, fontWeight: 500, cursor: running ? "not-allowed" : "pointer", opacity: running ? 0.6 : 1 }}>
+          <Play size={13} fill="#4338CA" /> {running ? "Running…" : "Start Demo"}
         </button>
-
-        <button type="button" className="fs-btn-primary flex items-center gap-1.5">
-          <RefreshCw size={14} />
-          Run Correction Scan
+        <button type="button" className="fs-btn-primary" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+          <RefreshCw size={14} /> Run Correction Scan
         </button>
       </div>
     </div>
@@ -202,173 +166,125 @@ function PageHeader({ onDemo, running }: { onDemo: () => void; running: boolean 
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   STATS ROW — colored cards
+   STAT CARDS — all inline styles
 ═══════════════════════════════════════════════════════════════════════════ */
 
-interface StatCardProps {
-  label: string;
-  value: string;
-  valueColor: string;
-  bg: string;
-  border: string;
-  icon: React.ReactNode;
-  trend?: React.ReactNode;
-  sub?: React.ReactNode;
-  onClick?: () => void;
-  pulse?: boolean;
-}
-
-function StatCard({ label, value, valueColor, bg, border, icon, trend, sub, onClick, pulse }: StatCardProps) {
-  return (
-    <div
-      role={onClick ? "button" : undefined}
-      tabIndex={onClick ? 0 : undefined}
-      onClick={onClick}
-      onKeyDown={onClick ? (e) => e.key === "Enter" && onClick() : undefined}
-      className={cn(
-        "relative rounded-lg border p-4 transition-all duration-150 overflow-hidden",
-        bg, border,
-        onClick && "cursor-pointer hover:shadow-md hover:scale-[1.01]",
-        pulse && "animate-pulse"
-      )}
-    >
-      {/* Icon top-right */}
-      <div className="absolute top-3 right-3 opacity-20">
-        {icon}
-      </div>
-
-      <p className="text-[11px] text-gray-500 uppercase tracking-wide font-semibold mb-1.5">{label}</p>
-      <p className={cn("text-3xl font-extrabold leading-none mb-2", valueColor)}>{value}</p>
-      {trend && <div className="flex items-center gap-1">{trend}</div>}
-      {sub}
-      {onClick && (
-        <p className="text-xs text-fw-blue mt-2 font-semibold flex items-center gap-0.5">
-          View details <ChevronRight size={11} />
-        </p>
-      )}
-    </div>
-  );
-}
+const STAT_CONFIGS = [
+  {
+    label: "Failed Deflections (7D)",
+    value: "47",
+    valueBg: "#FEF2F2", valueBorder: "#FECACA", valueColor: "#DC2626",
+    icon: <TrendingDown size={44} color="#FCA5A5" />,
+    trend: <span style={{ display: "inline-flex", alignItems: "center", gap: 4, background: "#F0FDF4", border: "1px solid #BBF7D0", borderRadius: 999, padding: "2px 8px", fontSize: 11, color: "#16A34A", fontWeight: 600 }}><ArrowDown size={11} /> −12% vs last week</span>,
+    clickable: false, pulse: "maybe",
+  },
+  {
+    label: "KB Articles Flagged",
+    value: "9",
+    valueBg: "#FFFBEB", valueBorder: "#FDE68A", valueColor: "#D97706",
+    icon: <FileText size={44} color="#FCD34D" />,
+    sub: <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 6 }}><AlertTriangle size={13} color="#D97706" /><span style={{ fontSize: 11, color: "#B45309", fontWeight: 500 }}>awaiting review</span></div>,
+    clickLabel: "View KB audit →",
+    clickable: true,
+  },
+  {
+    label: "Drafts Auto-Generated",
+    value: "6",
+    valueBg: "#EFF6FF", valueBorder: "#BFDBFE", valueColor: "#1D6AE5",
+    icon: <Zap size={44} color="#93C5FD" />,
+    sub: <span style={{ display: "inline-flex", background: "#DBEAFE", borderRadius: 999, padding: "2px 8px", fontSize: 11, color: "#1D4ED8", fontWeight: 600, marginTop: 6 }}>ready to approve</span>,
+    clickable: false,
+  },
+  {
+    label: "Deflection Rate",
+    value: "61%",
+    valueBg: "#F0FDF4", valueBorder: "#BBF7D0", valueColor: "#16A34A",
+    icon: <Shield size={44} color="#86EFAC" />,
+    trend: <span style={{ display: "inline-flex", alignItems: "center", gap: 4, background: "#F0FDF4", border: "1px solid #BBF7D0", borderRadius: 999, padding: "2px 8px", fontSize: 11, color: "#16A34A", fontWeight: 600 }}><ArrowUp size={11} /> +18pp after last fix</span>,
+    clickable: false,
+  },
+];
 
 function StatsRow({ onKBClick, pulse }: { onKBClick: () => void; pulse: boolean }) {
   return (
-    <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(4, minmax(0, 1fr))" }}>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: 12 }}>
+      {STAT_CONFIGS.map((cfg, idx) => (
+        <div key={cfg.label}
+          role={cfg.clickable ? "button" : undefined}
+          tabIndex={cfg.clickable ? 0 : undefined}
+          onClick={cfg.clickable ? onKBClick : undefined}
+          onKeyDown={cfg.clickable ? (e) => e.key === "Enter" && onKBClick() : undefined}
+          style={{
+            background: cfg.valueBg, border: `1px solid ${cfg.valueBorder}`, borderRadius: 10, padding: 16,
+            position: "relative", overflow: "hidden", cursor: cfg.clickable ? "pointer" : "default",
+            transition: "all 0.15s", boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
+            animation: pulse && idx === 0 ? "pulse 1s ease-in-out infinite" : "none",
+          }}
+          className={cfg.clickable ? "hover:shadow-md" : ""}
+        >
+          {/* Watermark icon */}
+          <div style={{ position: "absolute", right: 8, top: 8, opacity: 0.18 }}>{cfg.icon}</div>
 
-      <StatCard
-        label="Failed Deflections (7d)"
-        value="47"
-        valueColor="text-red-600"
-        bg="bg-red-50"
-        border="border-red-200"
-        icon={<TrendingDown size={40} className="text-red-400" />}
-        pulse={pulse}
-        trend={
-          <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 bg-emerald-50 rounded-full px-2 py-0.5">
-            <ArrowDown size={11} />−12% vs last week
-          </span>
-        }
-      />
-
-      <StatCard
-        label="KB Articles Flagged"
-        value="9"
-        valueColor="text-amber-600"
-        bg="bg-amber-50"
-        border="border-amber-200"
-        icon={<FileText size={40} className="text-amber-400" />}
-        onClick={onKBClick}
-        sub={
-          <div className="flex items-center gap-1.5 mt-1.5">
-            <AlertTriangle size={12} className="text-amber-500 shrink-0" />
-            <span className="text-xs text-amber-700 font-medium">awaiting review</span>
-          </div>
-        }
-      />
-
-      <StatCard
-        label="Drafts Auto-Generated"
-        value="6"
-        valueColor="text-fw-blue"
-        bg="bg-blue-50"
-        border="border-blue-200"
-        icon={<Zap size={40} className="text-blue-400" />}
-        sub={
-          <span className="inline-flex items-center gap-1 text-xs font-semibold text-fw-blue bg-blue-100 rounded-full px-2 py-0.5 mt-1.5">
-            ready to approve
-          </span>
-        }
-      />
-
-      <StatCard
-        label="Deflection Rate"
-        value="61%"
-        valueColor="text-emerald-600"
-        bg="bg-emerald-50"
-        border="border-emerald-200"
-        icon={<Shield size={40} className="text-emerald-400" />}
-        trend={
-          <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 bg-emerald-100 rounded-full px-2 py-0.5">
-            <ArrowUp size={11} />+18pp after last fix
-          </span>
-        }
-      />
+          <p style={{ fontSize: 11, color: "#6B7280", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>{cfg.label}</p>
+          <p style={{ fontSize: 32, fontWeight: 800, color: cfg.valueColor, lineHeight: 1, marginBottom: 8 }}>{cfg.value}</p>
+          {cfg.trend && cfg.trend}
+          {cfg.sub && cfg.sub}
+          {cfg.clickable && (
+            <p style={{ fontSize: 12, color: "#1D6AE5", marginTop: 8, fontWeight: 600, display: "flex", alignItems: "center", gap: 2 }}>
+              {cfg.clickLabel} <ChevronRight size={12} />
+            </p>
+          )}
+        </div>
+      ))}
     </div>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   FAILURE QUEUE — left-border color coded
+   FAILURE QUEUE
 ═══════════════════════════════════════════════════════════════════════════ */
 
 function FailureCard({ ticket, selected, approved, onClick }: {
   ticket: FailureTicket; selected: boolean; approved: boolean; onClick: () => void;
 }) {
-  const cfg = TYPE_CONFIG[ticket.type];
+  const s = TYPE_STYLE[ticket.type];
   return (
-    <button
-      type="button"
-      id={`ticket-${ticket.id}`}
-      onClick={onClick}
-      aria-pressed={selected}
-      className={cn(
-        "w-full text-left p-3 rounded-lg border-l-4 border border-fw-border transition-all duration-150 cursor-pointer",
-        "focus-visible:outline-2 focus-visible:outline-fw-blue",
-        cfg.border,
-        selected
-          ? "bg-blue-50 border-blue-200 shadow-sm"
-          : cn("bg-white hover:bg-gray-50 hover:shadow-sm", !selected && cfg.bg)
-      )}
+    <button type="button" id={`ticket-${ticket.id}`} onClick={onClick} aria-pressed={selected}
+      style={{
+        width: "100%", textAlign: "left", padding: 12, borderRadius: 8,
+        border: `1px solid ${selected ? "#BFDBFE" : "#E5E7EB"}`,
+        borderLeft: `4px solid ${s.borderLeft}`,
+        background: selected ? "#EFF6FF" : s.bg,
+        cursor: "pointer", transition: "all 0.15s",
+        boxShadow: selected ? "0 2px 8px rgba(29,106,229,0.1)" : "none",
+        display: "block",
+      }}
     >
-      <div className="flex items-center justify-between gap-2 mb-1.5">
-        <div className="flex items-center gap-2">
-          <span className="text-[11px] font-bold text-gray-500 bg-gray-100 rounded px-1.5 py-0.5 font-mono">
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <span style={{ fontSize: 11, fontWeight: 700, color: "#6B7280", background: "#F3F4F6", borderRadius: 4, padding: "2px 6px", fontFamily: "monospace" }}>
             #{ticket.id}
           </span>
           {approved && (
-            <span className="flex items-center gap-1 text-[11px] text-emerald-600 font-semibold bg-emerald-50 rounded-full px-2 py-0.5">
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 3, fontSize: 11, color: "#16A34A", background: "#F0FDF4", borderRadius: 999, padding: "1px 6px", fontWeight: 600, border: "1px solid #BBF7D0" }}>
               <CheckCircle size={10} /> Resolved
             </span>
           )}
         </div>
-        <span className="text-[11px] text-gray-400 shrink-0">{ticket.time}</span>
+        <span style={{ fontSize: 11, color: "#9CA3AF" }}>{ticket.time}</span>
       </div>
 
-      <p className="text-sm font-semibold text-gray-800 mb-2 leading-snug">{ticket.query}</p>
+      <p style={{ fontSize: 13, fontWeight: 600, color: "#111827", marginBottom: 8, lineHeight: 1.4 }}>{ticket.query}</p>
 
-      <div className="flex items-center justify-between gap-2">
-        <span className={cn(
-          "inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide border",
-          cfg.pill
-        )}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", background: s.pillBg, color: s.pillText, border: `1px solid ${s.pillBorder}`, borderRadius: 999, padding: "2px 8px" }}>
           {ticket.type}
         </span>
-        <span className="text-xs text-fw-blue hover:underline cursor-pointer shrink-0 font-medium">
-          View Fix →
-        </span>
+        <span style={{ fontSize: 12, color: "#1D6AE5", fontWeight: 600 }}>View Fix →</span>
       </div>
 
-      <p className="text-[11px] text-gray-400 mt-1.5 truncate">
-        <span className="font-medium text-gray-500">KB:</span> {ticket.article}
+      <p style={{ fontSize: 11, color: "#9CA3AF", marginTop: 6, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+        <span style={{ fontWeight: 500, color: "#6B7280" }}>KB:</span> {ticket.article}
       </p>
     </button>
   );
@@ -378,43 +294,38 @@ function FailureQueue({ selectedId, approvedIds, onSelect }: {
   selectedId: string; approvedIds: string[]; onSelect: (id: string) => void;
 }) {
   return (
-    <div className="bg-white rounded-lg border border-fw-border shadow-sm flex flex-col overflow-hidden h-full">
+    <div style={{ background: "#fff", border: "1px solid #E5E7EB", borderRadius: 10, boxShadow: "0 1px 4px rgba(0,0,0,0.06)", display: "flex", flexDirection: "column", overflow: "hidden", height: "100%" }}>
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-fw-border shrink-0 bg-gray-50">
-        <div className="flex items-center gap-2">
-          <AlertTriangle size={15} className="text-red-500" />
-          <span className="text-sm font-bold text-gray-800">Detected Failures</span>
-          <span className="rounded-full bg-red-100 text-red-700 text-[11px] font-bold px-2 py-0.5 border border-red-200">
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", borderBottom: "1px solid #E5E7EB", background: "#FAFAFA", flexShrink: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <AlertTriangle size={15} color="#EF4444" />
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#111827" }}>Detected Failures</span>
+          <span style={{ fontSize: 11, fontWeight: 700, color: "#DC2626", background: "#FEE2E2", border: "1px solid #FECACA", borderRadius: 999, padding: "1px 8px" }}>
             {TICKETS.length - approvedIds.length} open
           </span>
         </div>
-        <span className="text-[11px] text-gray-400 bg-white rounded-full px-2 py-0.5 border border-gray-200">Past 7 days</span>
+        <span style={{ fontSize: 11, color: "#9CA3AF", background: "#fff", border: "1px solid #E5E7EB", borderRadius: 999, padding: "2px 8px" }}>Past 7 days</span>
       </div>
 
       {/* Color legend */}
-      <div className="flex items-center gap-3 px-4 py-2 border-b border-fw-border bg-white shrink-0">
+      <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "6px 16px", borderBottom: "1px solid #F3F4F6", background: "#fff", flexShrink: 0 }}>
         {[
-          { label: "Stale Article", color: "bg-amber-400" },
-          { label: "No Coverage",   color: "bg-red-400"   },
-          { label: "Wrong Intent",  color: "bg-purple-400" },
+          { label: "Stale Article", color: "#FBBF24" },
+          { label: "No Coverage",   color: "#F87171" },
+          { label: "Wrong Intent",  color: "#C084FC" },
         ].map(({ label, color }) => (
-          <div key={label} className="flex items-center gap-1.5">
-            <span className={cn("w-2 h-2 rounded-full shrink-0", color)} />
-            <span className="text-[10px] text-gray-500 font-medium">{label}</span>
+          <div key={label} style={{ display: "flex", alignItems: "center", gap: 5 }}>
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: color, flexShrink: 0, display: "inline-block" }} />
+            <span style={{ fontSize: 10, color: "#6B7280", fontWeight: 500 }}>{label}</span>
           </div>
         ))}
       </div>
 
       <ScrollArea className="flex-1">
-        <div className="flex flex-col gap-2 p-3">
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, padding: 12 }}>
           {TICKETS.map((t) => (
-            <FailureCard
-              key={t.id}
-              ticket={t}
-              selected={selectedId === t.id}
-              approved={approvedIds.includes(t.id)}
-              onClick={() => onSelect(t.id)}
-            />
+            <FailureCard key={t.id} ticket={t} selected={selectedId === t.id}
+              approved={approvedIds.includes(t.id)} onClick={() => onSelect(t.id)} />
           ))}
         </div>
       </ScrollArea>
@@ -423,16 +334,16 @@ function FailureQueue({ selectedId, approvedIds, onSelect }: {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   CORRECTION BRIEF — with avatars + styled chat
+   CORRECTION BRIEF
 ═══════════════════════════════════════════════════════════════════════════ */
 
 function CorrectionBrief({ ticketId, isApproved, onApprove, pulseArticle, pulseApprove }: {
   ticketId: string; isApproved: boolean; onApprove: () => void;
   pulseArticle: boolean; pulseApprove: boolean;
 }) {
-  const ticket     = TICKETS.find((t) => t.id === ticketId)!;
+  const ticket = TICKETS.find((t) => t.id === ticketId)!;
+  const s = TYPE_STYLE[ticket.type];
   const isFeatured = ticketId === "T-4821";
-  const cfg        = TYPE_CONFIG[ticket.type];
 
   const { speak, stop, isLoading, isPlaying, error: speechError } = useSpeech();
   const [showSpeechErr, setShowSpeechErr] = useState(false);
@@ -443,46 +354,41 @@ function CorrectionBrief({ ticketId, isApproved, onApprove, pulseArticle, pulseA
       {showSpeechErr && speechError && (
         <SpeechErrorToast message={speechError} onDismiss={() => setShowSpeechErr(false)} />
       )}
-
-      <div className={cn(
-        "bg-white rounded-lg border border-fw-border shadow-sm flex flex-col overflow-hidden h-full transition-all duration-300",
-        isApproved   && "ring-2 ring-emerald-400 ring-offset-1",
-        pulseArticle && "ring-2 ring-fw-blue ring-offset-1"
-      )}>
+      <div style={{
+        background: "#fff", border: `1px solid ${isApproved ? "#6EE7B7" : pulseArticle ? "#1D6AE5" : "#E5E7EB"}`,
+        borderRadius: 10, boxShadow: `0 1px 4px rgba(0,0,0,0.06)${isApproved ? ", 0 0 0 3px rgba(16,185,129,0.15)" : pulseArticle ? ", 0 0 0 3px rgba(29,106,229,0.15)" : ""}`,
+        display: "flex", flexDirection: "column", overflow: "hidden", height: "100%", transition: "all 0.3s",
+      }}>
 
         {/* Header */}
-        <div className="px-4 py-3 border-b border-fw-border shrink-0 bg-gray-50">
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-fw-blue to-blue-700 flex items-center justify-center shadow-sm shrink-0">
-                <FileText size={13} className="text-white" />
+        <div style={{ padding: "12px 16px", borderBottom: "1px solid #E5E7EB", flexShrink: 0, background: "#FAFAFA" }}>
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{ width: 32, height: 32, borderRadius: 8, background: "linear-gradient(135deg,#1D6AE5,#1558C0)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 2px 6px rgba(29,106,229,0.3)" }}>
+                <FileText size={14} color="#fff" />
               </div>
               <div>
-                <p className="text-sm font-bold text-gray-900">
-                  Correction Brief
-                  <span className="ml-2 text-xs font-mono text-gray-500 font-normal">#{ticketId}</span>
+                <p style={{ fontSize: 13, fontWeight: 700, color: "#111827" }}>
+                  Correction Brief <span style={{ fontFamily: "monospace", fontSize: 11, color: "#9CA3AF", fontWeight: 400 }}>#{ticketId}</span>
                 </p>
-                <span className={cn(
-                  "inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide border mt-0.5",
-                  cfg.pill
-                )}>
+                <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", background: s.pillBg, color: s.pillText, border: `1px solid ${s.pillBorder}`, borderRadius: 999, padding: "1px 7px", display: "inline-block", marginTop: 2 }}>
                   {ticket.type}
                 </span>
               </div>
             </div>
 
-            {/* Listen button */}
+            {/* Listen */}
             {isFeatured && (
               isLoading ? (
-                <button disabled className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border border-gray-200 bg-white text-[11px] text-gray-400 opacity-60 cursor-not-allowed shrink-0">
+                <button disabled style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "5px 10px", borderRadius: 6, border: "1px solid #E5E7EB", background: "#fff", color: "#9CA3AF", fontSize: 11, cursor: "not-allowed", flexShrink: 0 }}>
                   <Loader2 size={12} className="animate-spin" /> Generating…
                 </button>
               ) : isPlaying ? (
-                <button type="button" onClick={stop} className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border border-blue-300 bg-blue-100 text-[11px] text-fw-blue font-medium hover:bg-blue-200 transition-colors cursor-pointer shrink-0">
+                <button type="button" onClick={stop} style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "5px 10px", borderRadius: 6, border: "1px solid #BFDBFE", background: "#DBEAFE", color: "#1D6AE5", fontSize: 11, fontWeight: 500, cursor: "pointer", flexShrink: 0 }}>
                   <VolumeX size={12} /> Stop
                 </button>
               ) : (
-                <button type="button" onClick={() => speak(buildBriefText(ticket.id, ticket.query))} className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border border-gray-200 bg-white text-[11px] text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer shrink-0">
+                <button type="button" onClick={() => speak(buildBriefText(ticket.id, ticket.query))} style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "5px 10px", borderRadius: 6, border: "1px solid #E5E7EB", background: "#fff", color: "#374151", fontSize: 11, fontWeight: 500, cursor: "pointer", flexShrink: 0 }}>
                   <Volume2 size={12} /> Listen
                 </button>
               )
@@ -490,35 +396,35 @@ function CorrectionBrief({ ticketId, isApproved, onApprove, pulseArticle, pulseA
           </div>
 
           {isFeatured && (
-            <div className="mt-2 flex items-start gap-1.5 bg-amber-50 border border-amber-200 rounded-md px-3 py-2">
-              <AlertTriangle size={13} className="text-amber-500 shrink-0 mt-0.5" />
-              <p className="text-xs text-amber-800 leading-snug">
-                <span className="font-semibold">Root cause:</span> KB references deprecated Cisco AnyConnect. Migrated to GlobalProtect, March 2025.
+            <div style={{ display: "flex", alignItems: "flex-start", gap: 6, background: "#FFFBEB", border: "1px solid #FDE68A", borderRadius: 6, padding: "8px 10px", marginTop: 10 }}>
+              <AlertTriangle size={13} color="#D97706" style={{ flexShrink: 0, marginTop: 1 }} />
+              <p style={{ fontSize: 12, color: "#92400E", lineHeight: 1.5 }}>
+                <strong>Root cause:</strong> {DIAGNOSIS}
               </p>
             </div>
           )}
-          <p className="text-[11px] text-gray-400 italic mt-1.5">Diagnosed by LoopCraft Supervisor Agent · {ticket.time}</p>
+          <p style={{ fontSize: 11, color: "#9CA3AF", fontStyle: "italic", marginTop: 8 }}>Diagnosed by LoopCraft Supervisor Agent · {ticket.time}</p>
         </div>
 
         {/* Body */}
         <ScrollArea className="flex-1">
-          <div className="p-4 flex flex-col gap-4">
+          <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 16 }}>
 
-            {/* ── Success banner */}
+            {/* ── Approved banner */}
             {isApproved && (
-              <div className="rounded-lg border border-emerald-300 bg-gradient-to-r from-emerald-50 to-green-50 p-3 flex items-start gap-2.5">
-                <div className="w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center shrink-0 mt-0.5">
-                  <CheckCircle size={14} className="text-white" />
+              <div style={{ borderRadius: 10, border: "1px solid #6EE7B7", background: "linear-gradient(135deg,#ECFDF5,#D1FAE5)", padding: 14, display: "flex", alignItems: "flex-start", gap: 12 }}>
+                <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#10B981", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <CheckCircle size={15} color="#fff" />
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-emerald-800">Article published to Freshservice KB ✓</p>
-                  <p className="text-xs text-emerald-700 mt-0.5">Freddy AI will use the updated article in future responses.</p>
-                  <div className="flex items-center gap-2 mt-2 p-2 bg-white rounded-md border border-emerald-200">
-                    <span className="text-xs text-gray-500">Deflection rate:</span>
-                    <span className="text-sm font-bold text-gray-400 line-through">23%</span>
-                    <span className="text-lg">→</span>
-                    <span className="text-sm font-extrabold text-emerald-600">67%</span>
-                    <span className="text-xs font-bold text-emerald-600 bg-emerald-100 rounded-full px-2 py-0.5">+44pp</span>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: "#065F46" }}>Article published to Freshservice KB ✓</p>
+                  <p style={{ fontSize: 12, color: "#047857", marginTop: 2 }}>Freddy AI will use the updated article in future responses.</p>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 10, background: "#fff", borderRadius: 8, border: "1px solid #A7F3D0", padding: "6px 12px" }}>
+                    <span style={{ fontSize: 12, color: "#6B7280" }}>Deflection rate:</span>
+                    <span style={{ fontSize: 14, fontWeight: 600, color: "#9CA3AF", textDecoration: "line-through" }}>23%</span>
+                    <span style={{ fontSize: 18, color: "#374151" }}>→</span>
+                    <span style={{ fontSize: 20, fontWeight: 800, color: "#10B981" }}>67%</span>
+                    <span style={{ background: "#D1FAE5", color: "#065F46", borderRadius: 999, padding: "2px 8px", fontSize: 11, fontWeight: 700 }}>+44pp</span>
                   </div>
                 </div>
               </div>
@@ -526,76 +432,63 @@ function CorrectionBrief({ ticketId, isApproved, onApprove, pulseArticle, pulseA
 
             {isFeatured ? (
               <>
-                {/* ── Conversation */}
+                {/* ── Chat */}
                 <div>
-                  <p className="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-3 flex items-center gap-2">
-                    <span className="flex-1 h-px bg-gray-100" />
-                    Employee Interaction
-                    <span className="flex-1 h-px bg-gray-100" />
-                  </p>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+                    <div style={{ flex: 1, height: 1, background: "#F3F4F6" }} />
+                    <span style={{ fontSize: 10, color: "#9CA3AF", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", background: "#F9FAFB", border: "1px solid #E5E7EB", borderRadius: 999, padding: "2px 8px" }}>Employee Interaction</span>
+                    <div style={{ flex: 1, height: 1, background: "#F3F4F6" }} />
+                  </div>
 
-                  {/* Employee message */}
-                  <div className="flex items-end gap-2 mb-3">
-                    <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center shrink-0 text-[10px] font-bold text-gray-600">
-                      MT
-                    </div>
-                    <div className="bg-gray-100 rounded-lg rounded-bl-sm p-3 max-w-[220px]">
-                      <p className="text-xs text-gray-800">How do I connect to VPN from home?</p>
+                  {/* Employee bubble */}
+                  <div style={{ display: "flex", alignItems: "flex-end", gap: 8, marginBottom: 10 }}>
+                    <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#E5E7EB", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 10, fontWeight: 700, color: "#4B5563" }}>MT</div>
+                    <div style={{ background: "#F3F4F6", borderRadius: "12px 12px 12px 2px", padding: "8px 12px", maxWidth: 210 }}>
+                      <p style={{ fontSize: 13, color: "#111827" }}>How do I connect to VPN from home?</p>
                     </div>
                   </div>
 
-                  {/* Freddy message */}
-                  <div className="flex items-end gap-2 mb-3 flex-row-reverse">
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-fw-blue to-blue-700 flex items-center justify-center shrink-0 text-[10px] font-bold text-white shadow-sm">
-                      AI
-                    </div>
-                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-lg rounded-br-sm p-3 max-w-[220px]">
-                      <p className="text-xs text-gray-800">Please follow the Cisco AnyConnect Setup Guide v2.1 to connect.</p>
+                  {/* Freddy bubble */}
+                  <div style={{ display: "flex", alignItems: "flex-end", gap: 8, marginBottom: 10, flexDirection: "row-reverse" }}>
+                    <div style={{ width: 28, height: 28, borderRadius: "50%", background: "linear-gradient(135deg,#1D6AE5,#1558C0)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 10, fontWeight: 700, color: "#fff", boxShadow: "0 2px 6px rgba(29,106,229,0.3)" }}>AI</div>
+                    <div style={{ background: "linear-gradient(135deg,#EFF6FF,#DBEAFE)", border: "1px solid #BFDBFE", borderRadius: "12px 12px 2px 12px", padding: "8px 12px", maxWidth: 210 }}>
+                      <p style={{ fontSize: 13, color: "#1E3A5F" }}>Please follow the Cisco AnyConnect Setup Guide v2.1 to connect.</p>
                     </div>
                   </div>
 
                   {/* Thumbs down */}
-                  <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-md px-3 py-2">
-                    <ThumbsDown size={13} className="text-red-500 shrink-0" />
-                    <span className="text-xs text-red-700 font-medium">Employee rated this response: <span className="font-bold">Unhelpful</span></span>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: 8, padding: "8px 12px" }}>
+                    <ThumbsDown size={13} color="#EF4444" />
+                    <span style={{ fontSize: 12, color: "#991B1B" }}>Employee rated: <strong>Unhelpful</strong></span>
                   </div>
                 </div>
 
                 {/* ── Divider */}
-                <div className="flex items-center gap-2">
-                  <div className="flex-1 h-px bg-gray-100" />
-                  <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wide bg-gray-50 px-2 py-0.5 rounded-full border border-gray-200">AI-Generated Fix</span>
-                  <div className="flex-1 h-px bg-gray-100" />
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <div style={{ flex: 1, height: 1, background: "#F3F4F6" }} />
+                  <span style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", background: "#F0FDF4", border: "1px solid #BBF7D0", color: "#15803D", borderRadius: 999, padding: "2px 8px" }}>AI-Generated Fix</span>
+                  <div style={{ flex: 1, height: 1, background: "#F3F4F6" }} />
                 </div>
 
                 {/* ── Draft article */}
                 <div>
-                  <p className="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-2">Proposed KB Update</p>
+                  <p style={{ fontSize: 11, color: "#9CA3AF", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>Proposed KB Update</p>
+                  <input readOnly value={DRAFT_TITLE}
+                    style={{ width: "100%", border: "1px solid #E5E7EB", borderRadius: 6, padding: "8px 12px", fontSize: 13, fontWeight: 600, color: "#111827", background: "#fff", outline: "none", cursor: "default", marginBottom: 10 }} />
 
-                  <input
-                    readOnly
-                    value={DRAFT_TITLE}
-                    className="w-full border border-fw-border rounded-md px-3 py-2 text-sm font-semibold text-gray-800 bg-white mb-3 focus:outline-none cursor-default"
-                  />
-
-                  <div className={cn(
-                    "rounded-lg border overflow-hidden transition-all duration-500",
-                    pulseArticle
-                      ? "border-fw-blue shadow-[0_0_0_3px_rgba(29,106,229,0.15)]"
-                      : "border-emerald-300"
-                  )}>
-                    {/* Provenance bar */}
-                    <div className="bg-gradient-to-r from-emerald-600 to-emerald-500 px-3 py-2 flex items-center gap-2">
-                      <CheckCircle size={12} className="text-white shrink-0" />
-                      <p className="text-[11px] text-white font-medium">
-                        Auto-drafted from #T-4821 · Reviewed by AI · Pending admin approval
-                      </p>
+                  <div style={{
+                    borderRadius: 8, border: `1px solid ${pulseArticle ? "#1D6AE5" : "#A7F3D0"}`,
+                    overflow: "hidden", transition: "all 0.5s",
+                    boxShadow: pulseArticle ? "0 0 0 3px rgba(29,106,229,0.15)" : "none",
+                  }}>
+                    <div style={{ background: "linear-gradient(90deg,#059669,#10B981)", padding: "8px 12px", display: "flex", alignItems: "center", gap: 6 }}>
+                      <CheckCircle size={12} color="#fff" />
+                      <p style={{ fontSize: 11, color: "#fff", fontWeight: 500 }}>Auto-drafted from #T-4821 · Reviewed by AI · Pending admin approval</p>
                     </div>
-                    {/* Body */}
-                    <div className="bg-white p-3 text-sm text-gray-700 leading-relaxed whitespace-pre-line border-t border-emerald-100 font-mono text-xs">
-                      {`Meridian Technologies migrated from Cisco AnyConnect to Palo Alto GlobalProtect as of March 2025.
+                    <div style={{ background: "#fff", padding: 12, fontSize: 12, color: "#374151", lineHeight: 1.7, fontFamily: "monospace", borderTop: "1px solid #D1FAE5", whiteSpace: "pre-wrap" }}>
+                      {`Meridian Technologies migrated from Cisco AnyConnect to Palo Alto GlobalProtect (March 2025).
 
-Step 1: Download GlobalProtect from portal.meridiantech.com/vpn
+Step 1: Download GlobalProtect at portal.meridiantech.com/vpn
 Step 2: Install and launch the application.
 Step 3: Enter gateway: vpn.meridiantech.com
 Step 4: Authenticate with your Okta credentials.
@@ -606,17 +499,16 @@ Step 4: Authenticate with your Okta credentials.
                 </div>
               </>
             ) : (
-              <div className="flex flex-col items-center justify-center py-12 text-center">
-                <div className="w-12 h-12 rounded-full bg-blue-50 border-2 border-blue-100 flex items-center justify-center mb-3">
-                  <RefreshCw size={20} className="text-fw-blue animate-spin" style={{ animationDuration: "3s" }} />
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px 24px", textAlign: "center" }}>
+                <div style={{ width: 48, height: 48, borderRadius: "50%", background: "#EFF6FF", border: "2px solid #BFDBFE", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                  <RefreshCw size={20} color="#1D6AE5" className="animate-spin" style={{ animationDuration: "3s" }} />
                 </div>
-                <p className="text-sm font-semibold text-gray-700 mb-1">Brief in progress</p>
-                <p className="text-xs text-gray-400 max-w-[200px]">
-                  LoopCraft is diagnosing #{ticketId} and drafting a KB correction.
-                </p>
-                <div className="mt-3 flex gap-1">
+                <p style={{ fontSize: 14, fontWeight: 600, color: "#374151", marginBottom: 4 }}>Brief in progress</p>
+                <p style={{ fontSize: 12, color: "#9CA3AF", maxWidth: 200 }}>LoopCraft is diagnosing #{ticketId} and drafting a KB correction.</p>
+                <div style={{ display: "flex", gap: 4, marginTop: 12 }}>
                   {[0, 1, 2].map((i) => (
-                    <span key={i} className="w-1.5 h-1.5 rounded-full bg-fw-blue animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />
+                    <span key={i} style={{ width: 6, height: 6, borderRadius: "50%", background: "#1D6AE5", display: "inline-block" }}
+                      className="animate-bounce" />
                   ))}
                 </div>
               </div>
@@ -624,30 +516,25 @@ Step 4: Authenticate with your Okta credentials.
           </div>
         </ScrollArea>
 
-        {/* Action row */}
+        {/* Footer */}
         {!isApproved && isFeatured && (
-          <div className="px-4 py-3 border-t border-fw-border flex items-center gap-2 shrink-0 bg-gray-50">
-            <Button
-              variant="primary"
-              size="md"
-              onClick={onApprove}
-              className={cn("gap-1.5 shadow-sm", pulseApprove && "animate-pulse ring-2 ring-fw-blue ring-offset-1")}
-            >
+          <div style={{ padding: "10px 16px", borderTop: "1px solid #E5E7EB", display: "flex", alignItems: "center", gap: 8, flexShrink: 0, background: "#FAFAFA" }}>
+            <Button variant="primary" size="md" onClick={onApprove}
+              className={cn("gap-1.5", pulseApprove && "animate-pulse ring-2 ring-fw-blue ring-offset-1")}>
               <CheckCircle size={14} /> Approve &amp; Publish
             </Button>
-            <button type="button" className="inline-flex items-center h-8 px-3 text-sm font-medium rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer">
+            <button type="button" style={{ height: 32, padding: "0 12px", fontSize: 13, fontWeight: 500, borderRadius: 6, border: "1px solid #E5E7EB", background: "#fff", color: "#374151", cursor: "pointer" }}>
               Edit Draft
             </button>
-            <button type="button" className="inline-flex items-center h-8 px-2 text-sm font-medium text-red-500 hover:text-red-700 transition-colors cursor-pointer">
+            <button type="button" style={{ height: 32, padding: "0 8px", fontSize: 13, color: "#EF4444", background: "none", border: "none", cursor: "pointer", fontWeight: 500 }}>
               Discard
             </button>
           </div>
         )}
-
         {isApproved && (
-          <div className="px-4 py-3 border-t border-emerald-200 bg-gradient-to-r from-emerald-50 to-green-50 shrink-0">
-            <p className="text-xs text-emerald-700 font-semibold flex items-center gap-1.5">
-              <CheckCircle size={12} /> Published to Freshservice KB · No further action required
+          <div style={{ padding: "10px 16px", borderTop: "1px solid #A7F3D0", background: "linear-gradient(90deg,#ECFDF5,#D1FAE5)", flexShrink: 0 }}>
+            <p style={{ fontSize: 12, color: "#065F46", fontWeight: 600, display: "flex", alignItems: "center", gap: 6 }}>
+              <CheckCircle size={13} color="#10B981" /> Published to Freshservice KB · No further action required
             </p>
           </div>
         )}
@@ -657,69 +544,50 @@ Step 4: Authenticate with your Okta credentials.
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   ROOT COMPONENT
+   ROOT
 ═══════════════════════════════════════════════════════════════════════════ */
 
 export default function FeedbackLoopsDashboard() {
-  const [selectedId,   setSelectedId]   = useState("T-4821");
-  const [approvedIds,  setApprovedIds]  = useState<string[]>([]);
-  const [showKBPanel,  setShowKBPanel]  = useState(false);
-
-  const [demoStep,     setDemoStep]     = useState(0);
-  const [demoToast,    setDemoToast]    = useState<{ step: number; msg: string } | null>(null);
-  const [demoComplete, setDemoComplete] = useState(false);
-  const [pulseStats,   setPulseStats]   = useState(false);
-  const [pulseArticle, setPulseArticle] = useState(false);
-  const [pulseApprove, setPulseApprove] = useState(false);
+  const [selectedId,  setSelectedId]  = useState("T-4821");
+  const [approvedIds, setApprovedIds] = useState<string[]>([]);
+  const [showKBPanel, setShowKBPanel] = useState(false);
+  const [demoStep,    setDemoStep]    = useState(0);
+  const [demoToast,   setDemoToast]   = useState<{ step: number; msg: string } | null>(null);
+  const [demoDone,    setDemoDone]    = useState(false);
+  const [pulseStats,  setPulseStats]  = useState(false);
+  const [pulseArticle,setPulseArticle]= useState(false);
+  const [pulseApprove,setPulseApprove]= useState(false);
 
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   useEffect(() => () => timersRef.current.forEach(clearTimeout), []);
-
-  const after = useCallback((fn: () => void, ms: number) => {
-    timersRef.current.push(setTimeout(fn, ms));
-  }, []);
-
-  function handleApprove() {
-    setApprovedIds((p) => p.includes(selectedId) ? p : [...p, selectedId]);
-  }
+  const after = useCallback((fn: () => void, ms: number) => { timersRef.current.push(setTimeout(fn, ms)); }, []);
 
   function startDemo() {
-    timersRef.current.forEach(clearTimeout);
-    timersRef.current = [];
-    setApprovedIds([]); setSelectedId("T-4821"); setDemoComplete(false);
+    timersRef.current.forEach(clearTimeout); timersRef.current = [];
+    setApprovedIds([]); setSelectedId("T-4821"); setDemoDone(false);
     setPulseStats(false); setPulseArticle(false); setPulseApprove(false);
-
-    setDemoStep(1); setPulseStats(true);
-    setDemoToast({ step: 1, msg: DEMO_STEPS[0] });
-
-    after(() => {
-      setPulseStats(false); setSelectedId("T-4821");
-      setDemoStep(2); setDemoToast({ step: 2, msg: DEMO_STEPS[1] });
-      document.getElementById("ticket-T-4821")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    }, 2500);
-    after(() => { setPulseArticle(true); setDemoStep(3); setDemoToast({ step: 3, msg: DEMO_STEPS[2] }); }, 5000);
+    setDemoStep(1); setPulseStats(true); setDemoToast({ step: 1, msg: DEMO_STEPS[0] });
+    after(() => { setPulseStats(false); setDemoStep(2); setDemoToast({ step: 2, msg: DEMO_STEPS[1] }); document.getElementById("ticket-T-4821")?.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 2500);
+    after(() => { setPulseArticle(true);  setDemoStep(3); setDemoToast({ step: 3, msg: DEMO_STEPS[2] }); }, 5000);
     after(() => { setPulseArticle(false); setPulseApprove(true); setDemoStep(4); setDemoToast({ step: 4, msg: DEMO_STEPS[3] }); }, 7500);
     after(() => { setPulseApprove(false); setApprovedIds(["T-4821"]); setDemoStep(5); setDemoToast({ step: 5, msg: DEMO_STEPS[4] }); }, 10000);
-    after(() => { setDemoStep(0); setDemoToast(null); setDemoComplete(true); }, 13000);
+    after(() => { setDemoStep(0); setDemoToast(null); setDemoDone(true); }, 13000);
   }
 
   return (
-    <div className="px-6 py-5 flex flex-col gap-5 min-h-screen">
+    <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 20, minHeight: "100vh" }}>
 
-      {/* Header */}
       <PageHeader onDemo={startDemo} running={demoStep > 0} />
 
       {/* Demo banner */}
-      {(demoStep > 0 || demoComplete) && (
-        <div className="bg-white rounded-lg border border-fw-border shadow-sm px-4 py-3">
-          {demoStep > 0 ? (
-            <StepIndicator active={demoStep} />
-          ) : (
-            <div className="flex items-start gap-2.5">
-              <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center shrink-0">
-                <CheckCircle size={14} className="text-white" />
+      {(demoStep > 0 || demoDone) && (
+        <div style={{ background: "#fff", border: "1px solid #E5E7EB", borderRadius: 10, padding: "12px 16px", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
+          {demoStep > 0 ? <StepIndicator active={demoStep} /> : (
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{ width: 24, height: 24, borderRadius: "50%", background: "#10B981", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <CheckCircle size={14} color="#fff" />
               </div>
-              <p className="text-sm text-emerald-800 font-semibold leading-snug">
+              <p style={{ fontSize: 13, fontWeight: 600, color: "#065F46" }}>
                 Demo complete — Freddy AI will no longer route VPN queries to the deprecated Cisco guide.
               </p>
             </div>
@@ -727,29 +595,23 @@ export default function FeedbackLoopsDashboard() {
         </div>
       )}
 
-      {/* Stats */}
       <StatsRow onKBClick={() => setShowKBPanel(true)} pulse={pulseStats} />
 
       {/* Split panels */}
-      <div className="grid gap-4" style={{ gridTemplateColumns: "1fr 1fr", minHeight: 0 }}>
-        <div style={{ height: "calc(100vh - 290px)", minHeight: 380 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, flex: 1, minHeight: 0 }}>
+        <div style={{ height: "calc(100vh - 300px)", minHeight: 360 }}>
           <FailureQueue selectedId={selectedId} approvedIds={approvedIds} onSelect={setSelectedId} />
         </div>
-        <div style={{ height: "calc(100vh - 290px)", minHeight: 380 }}>
+        <div style={{ height: "calc(100vh - 300px)", minHeight: 360 }}>
           <CorrectionBrief
-            ticketId={selectedId}
-            isApproved={approvedIds.includes(selectedId)}
-            onApprove={handleApprove}
-            pulseArticle={pulseArticle}
-            pulseApprove={pulseApprove}
+            ticketId={selectedId} isApproved={approvedIds.includes(selectedId)}
+            onApprove={() => setApprovedIds((p) => p.includes(selectedId) ? p : [...p, selectedId])}
+            pulseArticle={pulseArticle} pulseApprove={pulseApprove}
           />
         </div>
       </div>
 
-      {/* KB Drawer */}
       <KBHealthPanel open={showKBPanel} onClose={() => setShowKBPanel(false)} />
-
-      {/* Demo toast */}
       {demoToast && <DemoToast key={demoToast.step} step={demoToast.step} message={demoToast.msg} />}
     </div>
   );
