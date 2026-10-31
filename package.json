@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "benchmark": "python3 scripts/simulate_workload.py",
+    "pitch-deck": "python3 scripts/generate_pitch_deck.py"
   },
   "dependencies": {
     "@radix-ui/react-scroll-area": "^1.2.18",

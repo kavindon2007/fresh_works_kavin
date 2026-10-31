@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "LoopCraft — AI Feedback Intelligence",
+  title: "LoopCraft — Closed-Loop AI Support Optimization | Exasol Personal",
   description:
-    "LoopCraft admin dashboard for monitoring, triaging, and resolving Freddy AI Agent feedback events in real time.",
+    "LoopCraft closed-loop AI support feedback intelligence and knowledge base optimization engine powered by Exasol Personal in-memory analytics for ExaThon India 2026.",
 };
 
 export default function RootLayout({

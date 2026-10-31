@@ -46,22 +46,22 @@ export default function PlaceholderView({ tabName }: PlaceholderViewProps) {
 
       {/* Primary message */}
       <h2 className="text-base font-semibold text-gray-700 mb-2 max-w-sm">
-        This section is part of the live Freshservice platform.
+        This section connects to the live Exasol Analytics platform.
       </h2>
 
       {/* Secondary message */}
       <p className="text-sm text-gray-400 max-w-md leading-relaxed">
-        In your production deployment, this connects to your Freshservice
-        instance. Navigate to{" "}
+        In your production deployment, this connects to your Exasol Personal
+        database instance. Navigate to{" "}
         <span className="font-medium text-fw-blue">Feedback Loops</span> to
-        explore LoopCraft&apos;s custom functionality.
+        explore LoopCraft&apos;s custom in-memory functionality.
       </p>
 
       {/* Decorative rule */}
       <div className="mt-8 flex items-center gap-3">
         <span className="h-px w-12 bg-gray-200" />
         <span className="text-xs text-gray-300 font-medium">
-          Freshservice · AI Agent Studio
+          Exasol Personal · AI Analytics Studio
         </span>
         <span className="h-px w-12 bg-gray-200" />
       </div>

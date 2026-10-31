@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({
         text,
-        model_id: "eleven_monolingual_v1",
+        model_id: "eleven_multilingual_v2",
         voice_settings: {
           stability:        0.6,
           similarity_boost: 0.8,
@@ -48,13 +48,14 @@ export async function POST(request: NextRequest) {
 
     /* ── 4. Handle ElevenLabs error ──────────────────────────────────── */
     if (!elevenRes.ok) {
+      const errDetail = await elevenRes.text().catch(() => "(no body)");
       console.error(
         `[speak] ElevenLabs returned ${elevenRes.status}:`,
-        await elevenRes.text().catch(() => "(no body)")
+        errDetail
       );
       return NextResponse.json(
-        { error: "TTS unavailable — upstream error." },
-        { status: 500 }
+        { error: `ElevenLabs API error (${elevenRes.status})` },
+        { status: elevenRes.status }
       );
     }
 

@@ -118,26 +118,26 @@ export default function GlobalNav() {
         <Tooltip delayDuration={200}>
           <TooltipTrigger asChild>
             <div
-              aria-label="LoopCraft — Freshworks"
+              aria-label="LoopCraft — Exasol Personal"
               className={cn(
                 "w-8 h-8 rounded-lg",
                 "flex items-center justify-center",
-                "bg-white cursor-pointer",
+                "bg-gradient-to-br from-cyan-400 to-blue-600 cursor-pointer",
                 "shadow-sm",
                 "transition-transform duration-150 hover:scale-105",
                 "select-none"
               )}
             >
               <span
-                className="text-[#12344D] font-bold leading-none"
-                style={{ fontSize: 15 }}
+                className="text-white font-black leading-none tracking-tight"
+                style={{ fontSize: 13 }}
               >
-                F
+                LC
               </span>
             </div>
           </TooltipTrigger>
           <TooltipContent side="right" sideOffset={10}>
-            LoopCraft · Freshworks
+            LoopCraft · Exasol Personal
           </TooltipContent>
         </Tooltip>
 
@@ -165,7 +165,7 @@ export default function GlobalNav() {
             <div
               role="button"
               tabIndex={0}
-              aria-label="User menu — MT"
+              aria-label="User menu — KS"
               className={cn(
                 "w-8 h-8 rounded-full",
                 "flex items-center justify-center",
@@ -177,11 +177,11 @@ export default function GlobalNav() {
               )}
               style={{ backgroundColor: "#1F4E78", fontSize: 11 }}
             >
-              MT
+              KS
             </div>
           </TooltipTrigger>
           <TooltipContent side="right" sideOffset={10}>
-            Moana Taka · IT Admin
+            Kavin S. · Support Operations
           </TooltipContent>
         </Tooltip>
       </nav>

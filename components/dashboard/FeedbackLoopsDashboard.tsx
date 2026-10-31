@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
   RefreshCw, ArrowDown, ArrowUp, ChevronRight, ThumbsDown,
   CheckCircle, Play, Volume2, VolumeX, Loader2, AlertTriangle,
-  FileText, TrendingDown, TrendingUp, Zap, Shield,
+  FileText, TrendingDown, TrendingUp, Zap, Shield, Database,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -65,7 +65,7 @@ const DEMO_STEPS = [
   "Agent diagnoses root cause — stale VPN article from 2023.",
   "LoopCraft auto-drafts a corrected KB article from resolved tickets.",
   "IT admin reviews and approves with one click.",
-  "Freddy AI deflection on VPN queries jumps from 23% to 67%.",
+  "AI Agent deflection on VPN queries jumps from 23% to 67% (Powered by Exasol).",
 ] as const;
 
 function DemoToast({ step, message }: { step: number; message: string }) {
@@ -130,7 +130,7 @@ function PageHeader({ onDemo, running }: { onDemo: () => void; running: boolean 
     <div className="flex items-start justify-between gap-4 flex-wrap">
       <div className="min-w-0">
         <nav className="flex items-center gap-1 mb-2 flex-wrap">
-          {["AI Agent Studio", "LoopCraft Supervisor Agent", "Feedback Loops"].map((c, i, a) => (
+          {["Exasol AI Studio", "LoopCraft Supervisor Agent", "Feedback Loops"].map((c, i, a) => (
             <React.Fragment key={c}>
               <span style={{ fontSize: 12, color: i === a.length - 1 ? "#1D6AE5" : "#9CA3AF", fontWeight: i === a.length - 1 ? 500 : 400 }}>{c}</span>
               {i < a.length - 1 && <ChevronRight size={12} style={{ color: "#D1D5DB" }} />}
@@ -149,6 +149,11 @@ function PageHeader({ onDemo, running }: { onDemo: () => void; running: boolean 
       </div>
 
       <div className="flex items-center gap-2 shrink-0 flex-wrap pt-1">
+        {/* Exasol In-Memory Columnar Status Badge */}
+        <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#EFF6FF", border: "1px solid #BFDBFE", borderRadius: 999, padding: "4px 10px" }} title="In-Memory Analytics powered by Exasol Personal 8.0">
+          <Database size={12} className="text-blue-600" />
+          <span style={{ fontSize: 11, color: "#1D4ED8", fontWeight: 600 }}>Exasol In-Memory · 4.2ms</span>
+        </div>
         <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#F0FDF4", border: "1px solid #BBF7D0", borderRadius: 999, padding: "4px 10px" }}>
           <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#16A34A", display: "inline-block" }} className="animate-pulse" />
           <span style={{ fontSize: 12, color: "#15803D", fontWeight: 500 }}>Live · 2 min ago</span>
@@ -417,8 +422,8 @@ function CorrectionBrief({ ticketId, isApproved, onApprove, pulseArticle, pulseA
                   <CheckCircle size={15} color="#fff" />
                 </div>
                 <div>
-                  <p style={{ fontSize: 13, fontWeight: 700, color: "#065F46" }}>Article published to Freshservice KB ✓</p>
-                  <p style={{ fontSize: 12, color: "#047857", marginTop: 2 }}>Freddy AI will use the updated article in future responses.</p>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: "#065F46" }}>Article published to Knowledge Engine ✓</p>
+                  <p style={{ fontSize: 12, color: "#047857", marginTop: 2 }}>AI Agent will use the updated article in future responses.</p>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 10, background: "#fff", borderRadius: 8, border: "1px solid #A7F3D0", padding: "6px 12px" }}>
                     <span style={{ fontSize: 12, color: "#6B7280" }}>Deflection rate:</span>
                     <span style={{ fontSize: 14, fontWeight: 600, color: "#9CA3AF", textDecoration: "line-through" }}>23%</span>
@@ -448,7 +453,7 @@ function CorrectionBrief({ ticketId, isApproved, onApprove, pulseArticle, pulseA
                     </div>
                   </div>
 
-                  {/* Freddy bubble */}
+                  {/* AI Assistant bubble */}
                   <div style={{ display: "flex", alignItems: "flex-end", gap: 8, marginBottom: 10, flexDirection: "row-reverse" }}>
                     <div style={{ width: 28, height: 28, borderRadius: "50%", background: "linear-gradient(135deg,#1D6AE5,#1558C0)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 10, fontWeight: 700, color: "#fff", boxShadow: "0 2px 6px rgba(29,106,229,0.3)" }}>AI</div>
                     <div style={{ background: "linear-gradient(135deg,#EFF6FF,#DBEAFE)", border: "1px solid #BFDBFE", borderRadius: "12px 12px 2px 12px", padding: "8px 12px", maxWidth: 210 }}>
@@ -534,7 +539,7 @@ Step 4: Authenticate with your Okta credentials.
         {isApproved && (
           <div style={{ padding: "10px 16px", borderTop: "1px solid #A7F3D0", background: "linear-gradient(90deg,#ECFDF5,#D1FAE5)", flexShrink: 0 }}>
             <p style={{ fontSize: 12, color: "#065F46", fontWeight: 600, display: "flex", alignItems: "center", gap: 6 }}>
-              <CheckCircle size={13} color="#10B981" /> Published to Freshservice KB · No further action required
+              <CheckCircle size={13} color="#10B981" /> Published to Knowledge Engine · No further action required
             </p>
           </div>
         )}
@@ -588,7 +593,7 @@ export default function FeedbackLoopsDashboard() {
                 <CheckCircle size={14} color="#fff" />
               </div>
               <p style={{ fontSize: 13, fontWeight: 600, color: "#065F46" }}>
-                Demo complete — Freddy AI will no longer route VPN queries to the deprecated Cisco guide.
+                Demo complete — AI Agent will no longer route VPN queries to the deprecated Cisco guide. (Deflection restored to 67%)
               </p>
             </div>
           )}

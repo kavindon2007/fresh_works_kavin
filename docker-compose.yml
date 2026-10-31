@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  exasol-db:
+    image: exasol/docker-db:latest
+    container_name: loopcraft-exasol-personal
+    privileged: true
+    ports:
+      - "8563:8563"
+    environment:
+      - EXA_MEM_SIZE=2GiB
+    volumes:
+      - exasol_data:/exa/data
+      - ./exasol/init_schema.sql:/docker-entrypoint-initdb.d/init_schema.sql:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'SELECT 1;' | exaplus -u sys -p exasol -c localhost:8563 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  exasol_data:
+    driver: local

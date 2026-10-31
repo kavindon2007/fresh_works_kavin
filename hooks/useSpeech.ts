@@ -73,20 +73,55 @@ export function useSpeech(): UseSpeechReturn {
       };
       audio.onerror = () => {
         teardown();
-        setError("Audio playback failed.");
+        fallbackBrowserSpeech(text);
       };
 
       await audio.play();
 
     } catch {
-      teardown();
-      setError("Could not generate audio. Check ElevenLabs API key.");
+      // Graceful fallback: use browser's built-in Web Speech synthesis
+      fallbackBrowserSpeech(text);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const stop = () => teardown();
+  const fallbackBrowserSpeech = (text: string) => {
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1.05;
+      utterance.pitch = 1.0;
+      
+      const voices = window.speechSynthesis.getVoices();
+      const preferredVoice = voices.find(
+        (v) => v.lang.startsWith("en") && (v.name.includes("Natural") || v.name.includes("Samantha") || v.name.includes("Google") || v.name.includes("Karen"))
+      ) || voices.find((v) => v.lang.startsWith("en"));
+      
+      if (preferredVoice) {
+        utterance.voice = preferredVoice;
+      }
+
+      utterance.onstart = () => setIsPlaying(true);
+      utterance.onend = () => {
+        setIsPlaying(false);
+      };
+      utterance.onerror = () => {
+        setIsPlaying(false);
+      };
+
+      window.speechSynthesis.speak(utterance);
+    } else {
+      setError("Audio synthesis unavailable in this browser.");
+    }
+  };
+
+  const stop = () => {
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
+    teardown();
+  };
 
   /* Cleanup on component unmount */
   useEffect(() => {

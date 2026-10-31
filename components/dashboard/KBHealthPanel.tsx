@@ -178,7 +178,7 @@ export default function KBHealthPanel({ open, onClose }: KBHealthPanelProps) {
         <div className="flex items-start justify-between px-5 py-4 border-b border-fw-border shrink-0">
           <div>
             <h2 className="text-base font-semibold text-gray-900">KB Health Audit</h2>
-            <p className="text-xs text-gray-500 mt-0.5">Articles causing Freddy AI deflection failures</p>
+            <p className="text-xs text-gray-500 mt-0.5">Articles causing AI deflection failures · Exasol Columnar Audit</p>
           </div>
           <button
             type="button"

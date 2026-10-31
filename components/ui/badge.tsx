@@ -13,7 +13,7 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        /* Status variants matching Freshworks semantic palette */
+        /* Status variants matching semantic palette */
         green: "bg-fw-success-bg text-fw-success border-green-200",
         amber: "bg-fw-warning-bg text-fw-warning border-yellow-200",
         red:   "bg-fw-danger-bg  text-fw-danger  border-red-200",

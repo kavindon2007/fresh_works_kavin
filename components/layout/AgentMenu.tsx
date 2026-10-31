@@ -31,7 +31,7 @@ interface NavSectionDef {
 
 /* ── Data ────────────────────────────────────────────────────────────────── */
 
-/** "NEW" badge — blue pill, Freshworks blue tokens */
+/** "NEW" badge — blue pill design token */
 const NewBadge = () => (
   <span
     className="ml-auto shrink-0 rounded px-1.5 py-px text-[10px] font-semibold leading-tight"
@@ -74,7 +74,7 @@ const MAIN_SECTIONS: NavSectionDef[] = [
 
 const BOTTOM_ITEMS: NavItemDef[] = [
   { icon: HelpCircle,   label: "Help & Documentation",  tab: "help" },
-  { icon: ExternalLink, label: "Open in Freshservice",  tab: "external" },
+  { icon: ExternalLink, label: "Exasol Query Console",  tab: "external" },
 ];
 
 /* ── Sub-component: NavItem ──────────────────────────────────────────────── */
@@ -105,7 +105,7 @@ function NavItem({ def, isActive, onClick }: NavItemProps) {
           "border-l-transparent text-gray-600",
           "hover:bg-gray-50 hover:text-gray-900",
         ],
-        /* state: active — flat left-border only, no radius (Freshservice style) */
+        /* state: active — flat left-border only, no radius */
         isActive && [
           "border-l-fw-blue bg-blue-50 text-fw-blue font-medium",
         ]
@@ -161,7 +161,7 @@ export default function AgentMenu({ activeTab, onTabChange }: AgentMenuProps) {
       <div className="px-4 pt-5 pb-4 shrink-0">
         {/* Studio label */}
         <p className="text-xs font-medium uppercase tracking-wide text-gray-400 mb-1.5">
-          AI Agent Studio
+          Exasol AI Analytics Studio
         </p>
 
         {/* Agent name */}

@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        /* ── Freshworks Brand ───────────────────────────────── */
+        /* ── Core Brand Tokens ───────────────────────────────── */
         "fw-navy":           "#12344D",
         "fw-blue":           "#1D6AE5",
         "fw-blue-dark":      "#1558C0",
