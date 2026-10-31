@@ -4,6 +4,8 @@
 **Data Platform:** Exasol Personal / Community Edition  
 **Frontend & API:** Next.js 14+ (React 19 / TypeScript / Tailwind CSS)  
 **License:** MIT  
+**🔗 Live Deployment:** [https://fresh-works-kavin.vercel.app](https://fresh-works-kavin.vercel.app)  
+**🎬 3-Minute Demo Video:** [https://youtu.be/LJKkfyrKwA4](https://youtu.be/LJKkfyrKwA4)  
 
 ---
 

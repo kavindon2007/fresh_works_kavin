@@ -126,11 +126,11 @@ SLIDES_DATA = [
         "title": "Deliverables & Links",
         "type": "content",
         "bullets": [
-            "Public Code Repository: github.com/kavindon2007/fresh_works_kavin",
             "Live Web Demonstration: fresh-works-kavin.vercel.app",
+            "Demo Video (3 Min Max): youtu.be/LJKkfyrKwA4",
+            "Public Code Repository: github.com/kavindon2007/fresh_works_kavin",
             "Docker Compose Integration: Official exasol/docker-db setup with init schemas",
-            "Open-Source License: MIT License included",
-            "Pitch Deck & Demo Video Script: Included in repository docs"
+            "Open-Source License: MIT License included"
         ]
     }
 ]

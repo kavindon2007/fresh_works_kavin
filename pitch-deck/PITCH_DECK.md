@@ -121,7 +121,8 @@ Customer thumbs-down rating
 ---
 
 ## Slide 12: Submission Checklist & Links
-- 🌐 **Live Demo:** [fresh-works-kavin.vercel.app](https://fresh-works-kavin.vercel.app)
+- 🌐 **Live Demo:** [https://fresh-works-kavin.vercel.app](https://fresh-works-kavin.vercel.app)
+- 🎬 **Demo Video:** [https://youtu.be/LJKkfyrKwA4](https://youtu.be/LJKkfyrKwA4)
 - 💻 **Public Repo:** [github.com/kavindon2007/fresh_works_kavin](https://github.com/kavindon2007/fresh_works_kavin)
 - 🐳 **Docker Quickstart:** `docker compose up -d`
 - 📜 **License:** MIT License

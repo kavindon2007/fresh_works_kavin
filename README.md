@@ -47,12 +47,15 @@ All mandatory ExaThon 2026 deliverables are included in this public repository:
 | **Pitch Deck (PowerPoint PPTX)** | [pitch-deck/LoopCraft_Exathon_2026_Pitch_Deck.pptx](./pitch-deck/LoopCraft_Exathon_2026_Pitch_Deck.pptx) |
 | **Pitch Deck (PDF)** | [pitch-deck/LoopCraft_Exathon_2026_Pitch_Deck.pdf](./pitch-deck/LoopCraft_Exathon_2026_Pitch_Deck.pdf) |
 | **Pitch Deck Slide Script & Notes** | [pitch-deck/PITCH_DECK.md](./pitch-deck/PITCH_DECK.md) |
-| **3-Minute Demo Video Guide** | [docs/DEMO_VIDEO_SCRIPT.md](./docs/DEMO_VIDEO_SCRIPT.md) |
+| **Short Demo Video (YouTube)** | 🎬 **[Watch Demo Video (YouTube)](https://youtu.be/LJKkfyrKwA4)** · Guide: [docs/DEMO_VIDEO_SCRIPT.md](./docs/DEMO_VIDEO_SCRIPT.md) |
 | **Live Interactive Web Demo** | 🔗 **[fresh-works-kavin.vercel.app](https://fresh-works-kavin.vercel.app)** |
 | **Deployment & Run Guide** | [DEPLOYMENT.md](./DEPLOYMENT.md) |
 | **License (OSI-approved)** | [LICENSE](./LICENSE) (MIT License) |
 | **Exasol SQL Schemas & Views** | [exasol/init_schema.sql](./exasol/init_schema.sql) & [exasol/sample_queries.sql](./exasol/sample_queries.sql) |
 | **Docker Compose for Exasol** | [docker-compose.yml](./docker-compose.yml) |
+
+> 🎬 **Direct Demo Video Link:** [https://youtu.be/LJKkfyrKwA4](https://youtu.be/LJKkfyrKwA4)  
+> 🔗 **Direct Live Web App Link:** [https://fresh-works-kavin.vercel.app](https://fresh-works-kavin.vercel.app)
 
 ---
 

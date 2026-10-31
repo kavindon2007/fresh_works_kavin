@@ -2,7 +2,8 @@
 
 **Event:** ExaThon India 2026 (Exasol Open Build Challenge)  
 **Submission Requirement:** Short demo video, three minutes maximum (180 seconds)  
-**Live Application URL:** [fresh-works-kavin.vercel.app](https://fresh-works-kavin.vercel.app)  
+**🎬 Watch Demo Video (YouTube):** [https://youtu.be/LJKkfyrKwA4](https://youtu.be/LJKkfyrKwA4)  
+**🔗 Live Application URL:** [https://fresh-works-kavin.vercel.app](https://fresh-works-kavin.vercel.app)  
 
 ---
 
