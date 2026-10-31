@@ -4,8 +4,9 @@
 **Tracks:** Track 04 (The Work Behind the Work) & Track 02 (Customers, Channels & Demand)  
 **Author:** Kavin S. | Solo Developer  
 **Formats Available in Repository:**
-- 📊 PowerPoint Presentation: [`pitch-deck/LoopCraft_Exathon_2026_Pitch_Deck.pptx`](./LoopCraft_Exathon_2026_Pitch_Deck.pptx)
-- 📄 PDF Document: [`pitch-deck/LoopCraft_Exathon_2026_Pitch_Deck.pdf`](./LoopCraft_Exathon_2026_Pitch_Deck.pdf)
+- 📊 PowerPoint Presentation: [`pitch-deck/LoopCraft_ExaThon2026.pptx`](./LoopCraft_ExaThon2026.pptx)
+- 📄 PDF Document: [`pitch-deck/LoopCraft_ExaThon2026.pdf`](./LoopCraft_ExaThon2026.pdf)
+- 💡 Master Prompt: [`pitch-deck/PITCH_DECK_CREATION_PROMPT.md`](./PITCH_DECK_CREATION_PROMPT.md)
 
 ---
 

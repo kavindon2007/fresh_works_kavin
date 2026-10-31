@@ -48,9 +48,10 @@ All mandatory ExaThon 2026 deliverables are included in this public repository:
 |---|---|
 | **Problem Statement** | [docs/PROBLEM_STATEMENT.md](./docs/PROBLEM_STATEMENT.md) (Formal Exasol format) |
 | **Public Code Repository** | [github.com/kavindon2007/fresh_works_kavin](https://github.com/kavindon2007/fresh_works_kavin) |
-| **Pitch Deck (PowerPoint PPTX)** | [pitch-deck/LoopCraft_Exathon_2026_Pitch_Deck.pptx](./pitch-deck/LoopCraft_Exathon_2026_Pitch_Deck.pptx) |
-| **Pitch Deck (PDF)** | [pitch-deck/LoopCraft_Exathon_2026_Pitch_Deck.pdf](./pitch-deck/LoopCraft_Exathon_2026_Pitch_Deck.pdf) |
+| **Pitch Deck (PowerPoint PPTX)** | [pitch-deck/LoopCraft_ExaThon2026.pptx](./pitch-deck/LoopCraft_ExaThon2026.pptx) |
+| **Pitch Deck (PDF)** | [pitch-deck/LoopCraft_ExaThon2026.pdf](./pitch-deck/LoopCraft_ExaThon2026.pdf) |
 | **Pitch Deck Slide Script & Notes** | [pitch-deck/PITCH_DECK.md](./pitch-deck/PITCH_DECK.md) |
+| **Pitch Deck Master AI Prompt** | [pitch-deck/PITCH_DECK_CREATION_PROMPT.md](./pitch-deck/PITCH_DECK_CREATION_PROMPT.md) |
 | **Short Demo Video (YouTube)** | 🎬 **[Watch Demo Video (YouTube)](https://youtu.be/LJKkfyrKwA4)** · Guide: [docs/DEMO_VIDEO_SCRIPT.md](./docs/DEMO_VIDEO_SCRIPT.md) |
 | **Live Interactive Web Demo** | 🔗 **[fresh-works-kavin.vercel.app](https://fresh-works-kavin.vercel.app)** |
 | **Deployment & Run Guide** | [DEPLOYMENT.md](./DEPLOYMENT.md) |
