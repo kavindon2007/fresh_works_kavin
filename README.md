@@ -1,5 +1,9 @@
 # LoopCraft — Closed-Loop AI Support Optimization Engine
 
+<p align="center">
+  <img src="./docs/images/hero-banner.jpg" alt="LoopCraft — Closed-Loop AI & KB Optimizer" width="740" />
+</p>
+
 > Built for **ExaThon India 2026: The Exasol Open Build Challenge**  
 > **Tracks:** Track 04 — The Work Behind the Work · Track 02 — Customers, Channels & Demand  
 > **Core Data Platform:** [Exasol Personal](https://www.exasol.com/products/exasol-personal/) (High-Performance In-Memory Columnar Database)  
@@ -89,6 +93,18 @@ Customer / Employee thumbs-down rating
                               ↓
      Admin Approves → KB Updated in Exasol → Deflection Jumps 23% → 67%
 ```
+
+---
+
+## 🖼️ Application Screenshots & Live Walkthrough
+
+### 1. Interactive Demo Walkthrough (Step 4 of 5)
+![Demo Walkthrough](./docs/images/demo-walkthrough.jpg)
+*IT admin reviews the AI-diagnosed root cause, listens to the spoken brief, and reviews the auto-drafted KB article before 1-click approval.*
+
+### 2. Live Feedback Triage & Article Deflection
+![Dashboard Overview](./docs/images/dashboard-overview.jpg)
+*Real-time deflection monitoring, failure cluster categorization, and article drift diagnostics powered by Exasol Personal.*
 
 ---
 

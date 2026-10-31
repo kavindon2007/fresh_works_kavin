@@ -82,6 +82,7 @@ Customer thumbs-down rating
 ---
 
 ## Slide 7: Live UI & User Experience
+![Live Walkthrough](../docs/images/demo-walkthrough.jpg)
 - **Interactive Triage Queue:** Real-time list of conversational failures with diagnostic status badges.
 - **Voice Briefing:** Admins can click "Listen to Brief" for hands-free audio review.
 - **Side-by-Side Comparison:** Compares failed bot responses against newly synthesized knowledge base content.

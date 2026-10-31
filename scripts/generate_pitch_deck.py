@@ -13,7 +13,7 @@ from pptx.enum.text import PP_ALIGN
 from pptx.enum.shapes import MSO_SHAPE
 
 from reportlab.lib.pagesizes import landscape, letter
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, Image as RLImage
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib import colors
 
@@ -89,6 +89,18 @@ SLIDES_DATA = [
             "2. Failure Classifier Agent: Analyzes user query vs bot response, tagging failure type (Stale Article / No Coverage / Wrong Intent).",
             "3. KB Author Agent: Synthesizes resolution notes from resolved human tickets to auto-draft updated articles.",
             "4. Correction Brief Agent: Packages root cause diagnosis, spoken brief, and one-click approval into the admin queue."
+        ]
+    },
+    {
+        "title": "Live UI: Feedback Loops & Triage Dashboard",
+        "type": "image",
+        "image_path": "docs/images/demo-walkthrough.jpg",
+        "bullets": [
+            "Real-Time Deflection Tracking: Monitors failure clusters and deflection recovery (+44.3%).",
+            "Continuous Triage Queue: Surfaces detected failures with failure-type classification badges.",
+            "Automated Correction Briefs: Shows side-by-side comparison of stale vs corrected articles.",
+            "Multimodal Voice Briefing: Spoken audio review enables multitasking IT admins to listen hands-free.",
+            "One-Click Publishing: Syncs directly to Exasol knowledge tables instantly."
         ]
     },
     {
@@ -214,6 +226,19 @@ def create_pptx():
                     bp.font.size = Pt(20)
                     bp.font.color.rgb = TEXT_WHITE
                     bp.space_after = Pt(22)
+
+            elif data["type"] == "image":
+                c_box = slide.shapes.add_textbox(Inches(1.0), Inches(2.2), Inches(5.2), Inches(4.5))
+                ctf = c_box.text_frame
+                ctf.word_wrap = True
+                for i, bullet in enumerate(data["bullets"]):
+                    bp = ctf.add_paragraph() if i > 0 else ctf.paragraphs[0]
+                    bp.text = f"•  {bullet}"
+                    bp.font.size = Pt(17)
+                    bp.font.color.rgb = TEXT_WHITE
+                    bp.space_after = Pt(16)
+                if os.path.exists(data["image_path"]):
+                    slide.shapes.add_picture(data["image_path"], Inches(6.4), Inches(2.2), Inches(6.0), Inches(4.5))
 
             elif data["type"] == "card":
                 card = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(1.0), Inches(2.3), Inches(11.3), Inches(4.2))
@@ -365,6 +390,19 @@ def create_pdf():
             if data["type"] == "content":
                 for b in data["bullets"]:
                     story.append(Paragraph(f"• &nbsp; {b}", bullet_style))
+            elif data["type"] == "image":
+                left_cell = []
+                for b in data["bullets"]:
+                    left_cell.append(Paragraph(f"• &nbsp; {b}", bullet_style))
+                right_cell = []
+                if os.path.exists(data["image_path"]):
+                    right_cell.append(RLImage(data["image_path"], width=330, height=215))
+                t = Table([[left_cell, right_cell]], colWidths=[350, 350])
+                t.setStyle(TableStyle([
+                    ('VALIGN', (0,0), (-1,-1), 'TOP'),
+                    ('PADDING', (0,0), (-1,-1), 6),
+                ]))
+                story.append(t)
             elif data["type"] == "card":
                 card_data = [[Paragraph(f"<b>{data['card_title'].upper()}</b><br/><br/>{data['statement'].replace(chr(10), '<br/><br/>')}", body_style)]]
                 t = Table(card_data, colWidths=[700])
